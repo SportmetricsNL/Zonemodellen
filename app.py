@@ -1,3 +1,6 @@
+import base64
+from pathlib import Path
+
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -5,6 +8,16 @@ st.set_page_config(
     page_title="Zone-modellen en Z1-5 - SportMetrics",
     layout="wide",
 )
+
+BASE_DIR = Path(__file__).parent
+LOGO_PATH = BASE_DIR / "logo.png"
+if not LOGO_PATH.exists():
+    LOGO_PATH = BASE_DIR / "1.png"
+
+logo_data_uri = ""
+if LOGO_PATH.exists():
+    logo_b64 = base64.b64encode(LOGO_PATH.read_bytes()).decode("utf-8")
+    logo_data_uri = f"data:image/png;base64,{logo_b64}"
 
 HTML_PAGE = r"""
 <!doctype html>
@@ -39,6 +52,19 @@ HTML_PAGE = r"""
       background: radial-gradient(1200px 800px at 10% -10%, #ffffff 0%, var(--sand) 60%, var(--clay) 100%);
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url('{{LOGO_DATA_URI}}');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: min(55vmin, 520px);
+      opacity: 0.06;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .bg-shape {
       position: fixed;
       inset: auto;
@@ -46,7 +72,7 @@ HTML_PAGE = r"""
       height: 480px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, rgba(47, 124, 133, 0.28), rgba(47, 124, 133, 0.02));
-      z-index: 0;
+      z-index: -1;
     }
     .bg-shape.one { top: -120px; right: -120px; }
     .bg-shape.two { bottom: -200px; left: -140px; background: radial-gradient(circle, rgba(244, 182, 106, 0.35), rgba(244, 182, 106, 0.02)); }
@@ -421,7 +447,7 @@ HTML_PAGE = r"""
         </div>
       </div>
       <div class="callout">Eindboodschap: zones werken pas echt als ze gemeten, gekalibreerd en consequent toegepast worden.</div>
-      <p class="footer">Carbs are king!</p>
+      <p class="footer">Wil je dit in jullie huisstijl of met extra visuals? Zeg het, dan pas ik het aan.</p>
       <p class="footer">We zien je graag bij SportMetrics.</p>
     </section>
   </main>
@@ -483,5 +509,7 @@ HTML_PAGE = r"""
 </body>
 </html>
 """
+
+HTML_PAGE = HTML_PAGE.replace("{{LOGO_DATA_URI}}", logo_data_uri)
 
 components.html(HTML_PAGE, height=4200, scrolling=True)
