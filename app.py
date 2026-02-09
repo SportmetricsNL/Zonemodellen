@@ -449,7 +449,7 @@ HTML_PAGE = r"""
         </div>
       </div>
       <div class="callout">Eindboodschap: zones werken pas echt als ze gemeten, gekalibreerd en consequent toegepast worden.</div>
-      <p class="footer">Wil je dit in jullie huisstijl of met extra visuals? Zeg het, dan pas ik het aan.</p>
+      <p class="footer">Carbs!.</p>
       <p class="footer">We zien je graag bij SportMetrics.</p>
     </section>
   </main>
